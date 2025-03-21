@@ -5,7 +5,7 @@ let gameOver = false;
 let board = new Array(9)
 allSquares.forEach((square, index) => {
     square.addEventListener("click", ()=> {
-        if (gameOver) {
+        if (square.innerHTML || gameOver) {
             return //if someone tries to click an empty square after game is won it doesn't play
         }
         //for each square add eventlistener onclick, and then below is what happens onclick
@@ -18,7 +18,9 @@ allSquares.forEach((square, index) => {
           return; //this return statement is needed so that the title.innerHTML doesn't change on the bottom and the player resets 
         }
         if (checkDraw()) {
-            console.log('its a draw')
+            title.innerHTML = 'Draw!'
+            gameOver = true;
+            return;
         }
 
         if (currentPlayer === 'X') {
@@ -34,10 +36,15 @@ function checkDraw() {
     if (!board[i]) {
         return false; //if not all the squares have values then the game is still going so return false, because it runs this after it checks for wins too
     }
-    else {
-        return true;
-    }
    }
+   return true;
+}
+function restartGame() {
+   allSquares.forEach(square => {
+    square.innerHTML = ''
+    board = new Array(9)
+    gameOver = false; //reset gameover to false so it exits the first if statement
+   })
 }
 function checkWin() {
     const winningIndexes = [
